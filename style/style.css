@@ -20,7 +20,7 @@ body {
 
 footer {
     position: absolute;
-    bottom: 0;
+    bottom: -50px;
     justify-content: center;
     display: flex;
     width: 100%;
@@ -47,7 +47,7 @@ footer>div>span {
 }
 
 main {
-    height: calc(100vh);
+    height: calc(100vh - 50px);
     background: #ededed;
 }
 
@@ -61,7 +61,7 @@ main {
 }
 
 main>section {
-    height: calc(100% - 50px);
+    height: calc(100%);
     display: none;
     overflow: scroll;
     overflow-x: hidden;
