@@ -32,12 +32,17 @@
                 data: { start: i },
                 async: false,
             }).then((response) => {
-                for (let n = 0; n < response.subjects.length; n++) {
-                    this.render(response.subjects[n], n, sectionId);
-                    this.ajaxTime = true;
+                if (response.subjects.length === 0) {
+                    this.ajaxTime = false;
+                    view.$endBox.show();
                     view.$loading.hide()
+                } else {
+                    for (let n = 0; n < response.subjects.length; n++) {
+                        this.render(response.subjects[n], n, sectionId);
+                        view.$loading.hide()
+                    }
+                    this.ajaxTime = true;
                 }
-                this.ajaxTime = true;
             }, () => {
                 alert('Someting got wrong...');
                 this.ajaxTime = true;
@@ -120,10 +125,12 @@
             let theaterUrl = 'https://api.douban.com/v2/movie/in_theaters';
             let searchUrl = 'https://api.douban.com/v2/movie/search';
             let newUrl = searchUrl + '?q=';
+            let finalUrl;
 
             model.fetch(sectionId, top250Url, model.index[sectionId])
             view.$tab.on('click', function(e) {
                 view.$endBox.hide()
+                model.ajaxTime = true;
                 sectionId = $(this).index();
                 if (sectionId === 1) {
                     model.fetch(sectionId, theaterUrl, model.index[sectionId])
@@ -131,19 +138,7 @@
                 view.$section.hide().eq(sectionId).show();
                 $(this).addClass('active').siblings().removeClass('active')
             })
-            view.$section.scroll(function() {
-                if (sectionId === 0) {
-                    model.start(sectionId, top250Url)
-                } else if (sectionId === 1) {
-                    model.start(sectionId, theaterUrl)
-                } else if (sectionId === 2) {
-                    model.start(sectionId, newUrl)
-                }
-                if (view.$container.eq(sectionId).height() - view.$section.eq(sectionId).scrollTop() - view.$section.eq(sectionId).height() < 10) {
-                    view.$endBox.show()
-                    view.$loading.hide()
-                }
-            });
+
             $('.select>div').on('click', function() {
                 $(this).addClass('selectActive').siblings().removeClass('selectActive')
                 if (this.id === 'keyword') {
@@ -153,15 +148,24 @@
                 }
             })
             $('button').on('click', function(e) {
+                model.ajaxTime = true;
                 view.$container.eq(2).empty();
                 view.$loading.hide();
                 view.$endBox.hide();
                 e.preventDefault();
-                let finalUrl = newUrl + $('input')[0].value;
-                console.log(finalUrl)
+                finalUrl = newUrl + $('input')[0].value;
                 model.index[sectionId] = -20
                 model.start(sectionId, finalUrl)
             })
+            view.$section.scroll(function() {
+                if (sectionId === 0) {
+                    model.start(sectionId, top250Url)
+                } else if (sectionId === 1) {
+                    model.start(sectionId, theaterUrl)
+                } else if (sectionId === 2) {
+                    model.start(sectionId, finalUrl)
+                }
+            });
 
         },
     }
