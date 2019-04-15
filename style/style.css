@@ -16,12 +16,20 @@
 body {
     position: relative;
     background: #ededed;
+}
+
+.bodyPC {
     height: 100vh;
+}
+
+.bodyMobile {
+    height: 89vh;
 }
 
 footer {
     position: absolute;
     bottom: 0;
+    left: 0;
     justify-content: center;
     display: flex;
     width: 100%;
@@ -35,6 +43,7 @@ footer>div {
     width: 30%;
     padding: 5px 30px;
     flex: 1;
+    cursor: pointer;
 }
 
 footer>div>span {
@@ -177,6 +186,7 @@ form {
     font-size: 15px;
     padding: 5px 10px;
     margin: 5px 5px;
+    cursor: pointer;
 }
 
 .select>.selectActive {
@@ -204,4 +214,5 @@ button {
     color: white;
     border-radius: 25px;
     outline: none;
+    cursor: pointer;
 }

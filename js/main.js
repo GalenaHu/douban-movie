@@ -1,8 +1,10 @@
 ! function() {
     var view = {
+        $body: $('body'),
         $main: $('main'),
         $section: $('section'),
         $container: $('.container'),
+        $footer: $('footer'),
         $tab: $('footer>div'),
         $loading: $('.loading'),
         $endBox: $('.end'),
@@ -35,18 +37,18 @@
                 if (response.subjects.length === 0) {
                     this.ajaxTime = false;
                     view.$endBox.show();
-                    view.$loading.hide()
+                    view.$loading.hide();
                 } else {
                     for (let n = 0; n < response.subjects.length; n++) {
                         this.render(response.subjects[n], n, sectionId);
-                        view.$loading.hide()
+                        view.$loading.hide();
                     }
                     this.ajaxTime = true;
                 }
             }, () => {
                 alert('Someting got wrong...');
                 this.ajaxTime = true;
-                view.$loading.hide()
+                view.$loading.hide();
             });
         },
 
@@ -78,9 +80,9 @@
                             </div>
                         </div>
                     </a>
-                </div>`
+                </div>`;
             let $node = $(item);
-            view.$container.eq(sectionId).append($node)
+            view.$container.eq(sectionId).append($node);
         },
         setArray: function(array) {
             let string = '';
@@ -117,7 +119,13 @@
 
     var controller = {
         init: function() {
-            this.bind()
+            this.bind();
+            let u = navigator.userAgent;
+            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(u)) {
+                view.$body.addClass('bodyMobile');
+            } else {
+                view.$body.addClass('bodyPC');
+            }
         },
         bind: function() {
             let sectionId = 0;
@@ -127,20 +135,20 @@
             let newUrl = searchUrl + '?q=';
             let finalUrl;
 
-            model.fetch(sectionId, top250Url, model.index[sectionId])
+            model.fetch(sectionId, top250Url, model.index[sectionId]);
             view.$tab.on('click', function(e) {
-                view.$endBox.hide()
+                view.$endBox.hide();
                 model.ajaxTime = true;
                 sectionId = $(this).index();
                 if (sectionId === 1) {
-                    model.fetch(sectionId, theaterUrl, model.index[sectionId])
+                    model.fetch(sectionId, theaterUrl, model.index[sectionId]);
                 }
                 view.$section.hide().eq(sectionId).show();
-                $(this).addClass('active').siblings().removeClass('active')
+                $(this).addClass('active').siblings().removeClass('active');
             })
 
             $('.select>div').on('click', function() {
-                $(this).addClass('selectActive').siblings().removeClass('selectActive')
+                $(this).addClass('selectActive').siblings().removeClass('selectActive');
                 if (this.id === 'keyword') {
                     newUrl = searchUrl + '?q=';
                 } else if (this.id === 'tag') {
@@ -154,20 +162,20 @@
                 view.$endBox.hide();
                 e.preventDefault();
                 finalUrl = newUrl + $('input')[0].value;
-                model.index[sectionId] = -20
-                model.start(sectionId, finalUrl)
+                model.index[sectionId] = -20;
+                model.start(sectionId, finalUrl);
             })
             view.$section.scroll(function() {
                 if (sectionId === 0) {
-                    model.start(sectionId, top250Url)
+                    model.start(sectionId, top250Url);
                 } else if (sectionId === 1) {
-                    model.start(sectionId, theaterUrl)
+                    model.start(sectionId, theaterUrl);
                 } else if (sectionId === 2) {
-                    model.start(sectionId, finalUrl)
+                    model.start(sectionId, finalUrl);
                 }
             });
 
         },
     }
-    controller.init()
-}.call()
+    controller.init();
+}.call();
