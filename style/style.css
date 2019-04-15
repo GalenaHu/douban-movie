@@ -26,6 +26,10 @@ body {
     height: 89vh;
 }
 
+.bodyWeichat {
+    height: 90vh;
+}
+
 footer {
     position: absolute;
     bottom: 0;

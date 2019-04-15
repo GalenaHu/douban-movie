@@ -122,7 +122,11 @@
             this.bind();
             let u = navigator.userAgent;
             if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(u)) {
-                view.$body.addClass('bodyMobile');
+                if (/micromessenger/.test(u.toLowerCase())) {
+                    view.$body.addClass('bodyWeichat');
+                } else {
+                    view.$body.addClass('bodyMobile');
+                }
             } else {
                 view.$body.addClass('bodyPC');
             }
