@@ -120,16 +120,10 @@
     var controller = {
         init: function() {
             this.bind();
-            let u = navigator.userAgent;
-            if (/Android|webOS|iPhone|iPod|BlackBerry/i.test(u)) {
-                if (/micromessenger/.test(u.toLowerCase())) {
-                    view.$body.addClass('bodyWeichat');
-                } else {
-                    view.$body.addClass('bodyMobile');
-                }
-            } else {
-                view.$body.addClass('bodyPC');
-            }
+            view.$body.css('height', $(window).height() + 'px')
+            $(window).resize(function() {
+                view.$body.css('height', $(window).height() + 'px')
+            })
         },
         bind: function() {
             let sectionId = 0;
