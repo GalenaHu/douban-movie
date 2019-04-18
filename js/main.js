@@ -120,7 +120,6 @@
     var controller = {
         init: function() {
             this.bind();
-            console.log(document.documentElement.clientHeight)
             view.$body.css('height', document.documentElement.clientHeight)
             $(window).resize(function() {
                 view.$body.css('height', document.documentElement.clientHeight)
